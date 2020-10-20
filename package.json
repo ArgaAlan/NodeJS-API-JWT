@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.10.9",
     "mongose": "0.0.2-security",
+    "mysql": "^2.18.1",
     "nodemon": "^2.0.5"
   }
 }
