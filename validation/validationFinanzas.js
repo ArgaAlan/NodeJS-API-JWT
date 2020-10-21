@@ -73,7 +73,7 @@ const finanzasValidation = (data) => {
     return schema.validate(data);
 };
 
-const getFinanzasValidation = (data) => {
+const operacionFinanzasValidation = (data) => {
     const schema = Joi.object({
         operacion: Joi.string().required()
     });
@@ -82,4 +82,4 @@ const getFinanzasValidation = (data) => {
 };
 
 module.exports.finanzasValidation = finanzasValidation;
-module.exports.getFinanzasValidation = getFinanzasValidation;
+module.exports.operacionFinanzasValidation = operacionFinanzasValidation;

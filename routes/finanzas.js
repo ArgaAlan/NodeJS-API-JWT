@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { restart } = require('nodemon');
 const Finanzas = require('../model/Finanzas');
-const {finanzasValidation, getFinanzasValidation} = require('../validation/validationFinanzas');
+const {finanzasValidation, operacionFinanzasValidation} = require('../validation/validationFinanzas');
 
 router.post('/save', async (req,res) => {
     const {error} = finanzasValidation(req.body);
@@ -89,13 +89,29 @@ router.post('/save', async (req,res) => {
 });
 
 router.post('/get', async (req, res) => {
-    const {error} = getFinanzasValidation(req.body);
+    const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
     const operacion = await Finanzas.findOne({operacion: req.body.operacion});
     if(!operacion) return res.status(400).send('Esta operación no existe');
 
-    return res.send(operacion);
+    res.send(operacion);
+});
+
+
+router.post('/delete', async (req, res) => {
+    const {error} = operacionFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    try {
+        const deleteOperacion = await operacion.deleteOne();
+        res.send({operacion: operacion.operacion});
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 module.exports = router;
