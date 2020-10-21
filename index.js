@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 //Import routes
 const authRoute = require('./routes/auth');
 const postRoute = require('./routes/posts');
-const sqlRoute = require('./routes/sql');
+const finanzasRoute = require('./routes/finanzas')
 
 dotenv.config();
 
@@ -23,6 +23,6 @@ app.use(express.json());
 //Route middleware
 app.use('/api/user', authRoute);
 app.use('/api/posts', postRoute);
-app.use('/api/sql', sqlRoute);
+app.use('/api/finanzas', finanzasRoute);
 
 app.listen(3000, () => console.log("Server up and running"));
