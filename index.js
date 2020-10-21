@@ -15,6 +15,7 @@ mongoose.connect(
     { useUnifiedTopology: true,  useNewUrlParser: true },
     () => console.log('Connected to db')
 );
+mongoose.set('useFindAndModify', false);
 
 //Middleware
 app.use(express.json());

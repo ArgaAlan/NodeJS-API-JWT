@@ -76,7 +76,7 @@ const finanzasValidation = (data) => {
 const operacionFinanzasValidation = (data) => {
     const schema = Joi.object({
         operacion: Joi.string().required()
-    });
+    }).unknown();
 
     return schema.validate(data);
 };

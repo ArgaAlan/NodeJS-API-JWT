@@ -80,7 +80,7 @@ router.post('/save', async (req,res) => {
     });
 
     try {
-        const savedOperacion = await operacion.save();
+        await operacion.save();
         res.send({operacion: operacion.operacion});
     } catch (err) {
         res.status(400).send(err);
@@ -88,7 +88,7 @@ router.post('/save', async (req,res) => {
     
 });
 
-router.post('/get', async (req, res) => {
+router.get('/get', async (req, res) => {
     const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -99,7 +99,7 @@ router.post('/get', async (req, res) => {
 });
 
 
-router.post('/delete', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -107,7 +107,22 @@ router.post('/delete', async (req, res) => {
     if(!operacion) return res.status(400).send('Esta operación no existe');
 
     try {
-        const deleteOperacion = await operacion.deleteOne();
+        await operacion.deleteOne();
+        res.send({operacion: operacion.operacion});
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+router.patch('/update', async (req, res) => {
+    const {error} = operacionFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    try {
+        await Finanzas.findOneAndUpdate(operacion.id ,req.body);
         res.send({operacion: operacion.operacion});
     } catch (err) {
         res.status(400).send(err);
