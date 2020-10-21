@@ -3,7 +3,8 @@ const { restart } = require('nodemon');
 const Finanzas = require('../model/Finanzas');
 const {finanzasValidation, operacionFinanzasValidation} = require('../validation/validationFinanzas');
 
-router.post('/save', async (req,res) => {
+//Add new operacion
+router.post('/post', async (req,res) => {
     const {error} = finanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -88,6 +89,16 @@ router.post('/save', async (req,res) => {
     
 });
 
+router.get('/getAll', async (req,res) => {
+    try {
+        const operaciones = await Finanzas.find();
+        res.send(operaciones);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+})
+
+//Get one operacion
 router.get('/get', async (req, res) => {
     const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -98,7 +109,7 @@ router.get('/get', async (req, res) => {
     res.send(operacion);
 });
 
-
+//Delete operacion
 router.delete('/delete', async (req, res) => {
     const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
@@ -114,6 +125,7 @@ router.delete('/delete', async (req, res) => {
     }
 });
 
+//Update operacion
 router.patch('/update', async (req, res) => {
     const {error} = operacionFinanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
