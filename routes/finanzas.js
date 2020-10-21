@@ -3,7 +3,7 @@ const { restart } = require('nodemon');
 const Finanzas = require('../model/Finanzas');
 const {finanzasValidation} = require('../validation/validationFinanzas');
 
-router.get('/post', async (req,res) => {
+router.post('/post', async (req,res) => {
     const {error} = finanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -51,6 +51,7 @@ router.get('/post', async (req,res) => {
         fondeador:req.body.fondeador,
         valorOperacion:req.body.valorOperacion,
         tipoFin:req.body.tipoFin,
+        tasa:req.body.tasa,
         anticipo:req.body.anticipo,
         seguroDeuda:req.body.seguroDeuda,
         apertura:req.body.apertura,
