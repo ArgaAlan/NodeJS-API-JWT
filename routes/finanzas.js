@@ -1,9 +1,9 @@
 const router = require('express').Router();
 const { restart } = require('nodemon');
 const Finanzas = require('../model/Finanzas');
-const {finanzasValidation} = require('../validation/validationFinanzas');
+const {finanzasValidation, getFinanzasValidation} = require('../validation/validationFinanzas');
 
-router.post('/post', async (req,res) => {
+router.post('/save', async (req,res) => {
     const {error} = finanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -86,6 +86,16 @@ router.post('/post', async (req,res) => {
         res.status(400).send(err);
     }
     
+});
+
+router.post('/get', async (req, res) => {
+    const {error} = getFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    return res.send(operacion);
 });
 
 module.exports = router;
