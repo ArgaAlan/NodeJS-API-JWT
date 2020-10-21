@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const { restart } = require('nodemon');
 const Finanzas = require('../model/Finanzas');
-const {finanzasValidation} = require('../validation/validationFinanzas');
+const {finanzasValidation, operacionFinanzasValidation} = require('../validation/validationFinanzas');
 
-router.get('/post', async (req,res) => {
+//Add new operacion
+router.post('/post', async (req,res) => {
     const {error} = finanzasValidation(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -51,6 +52,7 @@ router.get('/post', async (req,res) => {
         fondeador:req.body.fondeador,
         valorOperacion:req.body.valorOperacion,
         tipoFin:req.body.tipoFin,
+        tasa:req.body.tasa,
         anticipo:req.body.anticipo,
         seguroDeuda:req.body.seguroDeuda,
         apertura:req.body.apertura,
@@ -79,12 +81,64 @@ router.get('/post', async (req,res) => {
     });
 
     try {
-        const savedOperacion = await operacion.save();
+        await operacion.save();
         res.send({operacion: operacion.operacion});
     } catch (err) {
         res.status(400).send(err);
     }
     
+});
+
+router.get('/getAll', async (req,res) => {
+    try {
+        const operaciones = await Finanzas.find();
+        res.send(operaciones);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+})
+
+//Get one operacion
+router.get('/get', async (req, res) => {
+    const {error} = operacionFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    res.send(operacion);
+});
+
+//Delete operacion
+router.delete('/delete', async (req, res) => {
+    const {error} = operacionFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    try {
+        await operacion.deleteOne();
+        res.send({operacion: operacion.operacion});
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
+//Update operacion
+router.patch('/update', async (req, res) => {
+    const {error} = operacionFinanzasValidation(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
+    const operacion = await Finanzas.findOne({operacion: req.body.operacion});
+    if(!operacion) return res.status(400).send('Esta operación no existe');
+
+    try {
+        await Finanzas.findOneAndUpdate(operacion.id ,req.body);
+        res.send({operacion: operacion.operacion});
+    } catch (err) {
+        res.status(400).send(err);
+    }
 });
 
 module.exports = router;

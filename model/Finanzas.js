@@ -36,15 +36,13 @@ const finazasSchema = new mongoose.Schema({
         max: 100
     },
     tfiva: {
-        type: String,
-        max: 50
+        type: Boolean
     },
     iva: {
         type: Number
     },
     tfseguro: {
-        type: String,
-        max: 50
+        type: Boolean
     },
     compania: {
         type: String,
@@ -54,15 +52,15 @@ const finazasSchema = new mongoose.Schema({
         type: Number
     },
     fpago: {
-        type: Number
+        type: String,
+        max: 50
     },
     poliza: {
         type: String,
         max: 100
     },
     tfSegFin: {
-        type: String,
-        max: 100
+        type: Boolean
     },
     vigInicio: {
         type: String,
@@ -132,12 +130,10 @@ const finazasSchema = new mongoose.Schema({
         max: 100
     },
     comision: {
-        type: String,
-        max: 100
+        type: Number
     },
     importe: {
-        type: String,
-        max: 100
+        type: Number
     },
     producto: {
         type: String,
@@ -151,6 +147,10 @@ const finazasSchema = new mongoose.Schema({
         type: Number
     },
     tipoFin: {
+        type: String,
+        max: 50
+    },
+    tasa: {
         type: Number
     },
     anticipo: {
@@ -205,8 +205,7 @@ const finazasSchema = new mongoose.Schema({
         max: 100
     },
     cancelado: {
-        type: String,
-        max: 100
+        type: Boolean
     },
     idCliente: {
         type: String,
@@ -237,8 +236,7 @@ const finazasSchema = new mongoose.Schema({
         max: 100
     },
     aplicaPagos: {
-        type: String,
-        max: 100
+        type: Boolean
     },
     fFondeo: {
         type: Date
